@@ -9,11 +9,11 @@ from app.config import config
 
 authorize = {}
 PERMISSION_AUTHORIZATION = {
-    # 1 - Bank`s manager 
-    # 2 - Client
-    "logout": [1, 2],
-    "api": [1, 2],
-    "manage_documents": [1]
+    # 0 - Admin
+    # 1 - HR
+    # 2 - Employee
+    "logout": [0, 1, 2],
+    "create_new_vacancy": [0, 1],
 }
 
 
