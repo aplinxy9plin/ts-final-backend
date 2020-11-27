@@ -13,7 +13,7 @@ PERMISSION_AUTHORIZATION = {
     # 1 - HR
     # 2 - Employee
     "logout": [0, 1, 2],
-    "create_new_vacancy": [0, 1],
+    "create_new_vacancy": [0, 2]
 }
 
 

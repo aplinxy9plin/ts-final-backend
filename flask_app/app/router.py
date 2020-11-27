@@ -2,7 +2,7 @@ from app.errorhandler import error_bp
 
 from api.api import api_bp
 
-from vacancy.create_new import create_new_vacancy_bp
+from vacancy.create_new_vacancy import create_new_vacancy_bp
 
 from personal_area.logout import logout_bp
 from personal_area.authorization import auth_bp
