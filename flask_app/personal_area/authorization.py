@@ -49,8 +49,8 @@ def authorization():
                 return jsonify({'message': 'Пользователь заблокирован'}), 401
         return jsonify({'message': 'Неправильный логин или пароль'}), 401
 
-    # except TypeError:
-    #     return jsonify({"messageError": "Нет подключения к БД"}), 500
+    except TypeError:
+        return jsonify({"messageError": "Нет подключения к БД"}), 500
     finally:
         database.close()
     
