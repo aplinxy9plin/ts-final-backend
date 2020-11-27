@@ -14,9 +14,9 @@ registration_bp = Blueprint('registration', __name__)
 @registration_bp.route('/get_roles', methods=['GET'])
 def get_roles():
     return jsonify({
+        "0": "Admin",
         "1": "HR",
-        "2": "Employee",
-        "3": "Candidate"
+        "2": "Employee"
     })
 
 @registration_bp.route('/registration', methods=['POST'])

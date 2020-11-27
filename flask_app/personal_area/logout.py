@@ -16,8 +16,3 @@ def logout():
 
     authorize.pop(user.get_token())
     return jsonify({'message': 'Пользователь вышел'}), 401, {'ContentType': 'application/json'}
-
-@logout_bp.route('/check', methods=['GET'])
-def check():
-    """Logout Page"""
-    return jsonify("Ok")
