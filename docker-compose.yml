@@ -1,0 +1,20 @@
+version: "3"
+services:
+  flask:
+    build: ./flask_app
+    container_name: flask-wellplay-sibir
+    environment:
+      - CONFIG_PATH=/flask_app/settings.ini
+      - FLASK_APP=main.py
+
+      # для отладки (при запуске в релиз убрать!)
+      - FLASK_DEBUG=1
+      - PYTHONUNBUFFERED=True                   # Позволяет отслеживать процесс работы приложения в командной строке
+    restart: on-failure
+    volumes:
+      - ./flask_app:/flask_app
+    ports:
+      - "5000:5000"
+    # command: python3 main.py
+    # для релиза
+    command: gunicorn main:"create_flask_app()" --timeout=180000 --workers 1 --threads 20 -b 0.0.0.0:5000 --reload
