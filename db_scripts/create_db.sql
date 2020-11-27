@@ -65,13 +65,19 @@ CREATE TABLE job_responsibilities(
     title text UNIQUE,
     description text
 );
+CREATE TABLE special_advantages(
+    id SERIAL PRIMARY KEY,
+    title text UNIQUE,
+    description text
+);
 --
 
 CREATE TABLE vacancy(
     id SERIAL PRIMARY KEY,
     specializations_id int REFERENCES public.specializations(id),
     grade_id int REFERENCES public.grade(id),
-    work_address_id int REFERENCES public.work_address(id)
+    work_address_id int REFERENCES public.work_address(id),
+    creare_user_id uuid REFERENCES public.users(id)
 );
 
 -- Отношения полей вакансии по отношению к вакансии
@@ -94,5 +100,10 @@ CREATE TABLE job_responsibilities_for_a_vacancy(
     id BIGSERIAL PRIMARY KEY,
     vacancy_id int REFERENCES public.vacancy(id),
     job_responsibilities_id int REFERENCES public.job_responsibilities(id)
+);
+CREATE TABLE special_advantage_for_a_vacancy(
+    id BIGSERIAL PRIMARY KEY,
+    vacancy_id int REFERENCES public.vacancy(id),
+    special_advantage_id int REFERENCES public.special_advantages(id)
 );
 --
