@@ -116,6 +116,8 @@ def get_directories_for_vacancies():
             "description": description
         })
 
+    result["professional_area"] = [result["professional_area"][i] for i in result["professional_area"]]
+
     database.close()
     return jsonify(result)
 

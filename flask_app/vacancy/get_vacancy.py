@@ -29,7 +29,6 @@ def get_all_vacancy():
     """)
     if res:
         for id, dt, specialization, professional_area in res:
-            print(type(dt))
             result.append({
                 "id": id,
                 "dt": time.mktime(datetime.datetime.strptime(dt.strftime("%d/%m/%Y"), 
