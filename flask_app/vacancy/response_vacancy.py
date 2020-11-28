@@ -22,7 +22,8 @@ def response_vacancy():
         (None, "link_social_network"),
         (None, "resume"),
         (None, "skills"),
-        (None, "technologies_and_tools")
+        (None, "technologies_and_tools"),
+        (None, "vacancy_id")
     ]
 
     response_vacancy_data = request.get_json(silent=True)
@@ -70,7 +71,8 @@ def insert_candidate(database, response_vacancy_data):
             "lastname": "",
             "number_phone": "",
             "link_social_network": "",
-            "resume": ""
+            "resume": "",
+            "vacancy_id": ""
         }
     
     Returned: id
@@ -80,7 +82,8 @@ def insert_candidate(database, response_vacancy_data):
         "lastname",
         "number_phone",
         "link_social_network",
-        "resume"
+        "resume",
+        "vacancy_id"
     ]
     res = database.select_data(sql.SQL("INSERT INTO {table}({fields}) VALUES({values}) RETURNING id").format(
         fields=sql.SQL(",").join(sql.Identifier(i) for i in fields),
