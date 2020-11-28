@@ -15,7 +15,8 @@ PERMISSION_AUTHORIZATION = {
     "logout": [0, 1, 2],
     "create_new_vacancy": [0, 2],
     "create_questions": [0, 2],
-    "get_vacancy": [0, 1, 2]
+    "get_vacancy": [0, 1, 2],
+    "manage_vacancy": [0, 1]
 }
 
 
