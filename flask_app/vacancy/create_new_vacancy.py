@@ -60,7 +60,7 @@ def create_new_vacancy():
     check = insert_vacancy(database, values, user)
 
     database.close()
-    return jsonify(True)
+    return jsonify(check)
 
 
 @create_new_vacancy_bp.route('/get_directories_for_vacancies', methods=["GET"])
