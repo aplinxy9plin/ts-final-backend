@@ -35,7 +35,8 @@ def response_vacancy():
 
     candidate_id = insert_candidate(database, response_vacancy_data)
     check = union_candidate_and_skills(database, candidate_id, response_vacancy_data)
-
+    if response_vacancy_data.get('answers'):
+        check = write_answers(database, candidate_id, response_vacancy_data['answers'])
     database.close()
     return jsonify(check)
 
@@ -106,6 +107,22 @@ def union_candidate_and_skills(database, candidate_id, values):
                 values=sql.Literal(val),
                 candidate_id=sql.Literal(candidate_id)
             ))
+
+    return database.insert_data(sql.SQL("""BEGIN; 
+                {}
+                COMMIT;""").format(sql.SQL(' ').join(i for i in transaction)))
+
+
+def write_answers(database, candidate_id, answers):
+    transaction = []
+
+    for question_id, answer_id in answers:
+        transaction.append(sql.SQL("INSERT INTO {table}(question_id, answer_id, candidate_id, result) VALUES({question_id}, {answer_id}, {candidate_id}, (SELECT is_true FROM answers_on_question WHERE id={answer_id}));").format(
+            table=sql.Identifier("public", "answer_on_question_candidate"),
+            question_id=sql.Literal(question_id),
+            answer_id=sql.Literal(answer_id),
+            candidate_id=sql.Literal(candidate_id)
+        ))
 
     return database.insert_data(sql.SQL("""BEGIN; 
                 {}

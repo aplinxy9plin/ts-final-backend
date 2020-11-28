@@ -6,14 +6,10 @@ from app.models import check_auth, authorize
 
 from vacancy.create_new_vacancy import select_info, check_fields
 
-create_questions_bp = Blueprint('create_questions', __name__)
+testing_bp = Blueprint('testing', __name__)
 
-@create_questions_bp.route('/get_directories_for_questions', methods=["GET"])
-def get_directories_for_questions():
-    user = check_auth(request.headers, __name__)
-    if user != True:
-        return user
-    user = authorize.get(request.headers.get('UserToken'))
+@testing_bp.route('/get_questions_for_teseting/<int:vacancy_id>', methods=["GET"])
+def get_questions_for_teseting(vacancy_id):
     try:
         database = Database()
     except TypeError:
@@ -21,14 +17,41 @@ def get_directories_for_questions():
     
     result = {}
 
-    directories = [
-        (["id", "title"], "skills"),
-        (["id", "title", "description"], "grade"),
-        (["id", "title", "description"], "question_types")
-    ]
+    questons = database.select_data(sql.SQL("""
+        SELECT
+            q.id questons_id,
+            qt.title question_type_title,
+            qt.description question_type_description,
+            g.title grade_title,
+            s.title skills_title,
+            q.title questons_title,
+            q.question questons_question,
+            aoq.id answer_id,
+            aoq.answer answer_text
+        FROM questons q
+            LEFT JOIN grade g on q.grade_id = g.id
+            LEFT JOIN skills s on q.skill_id = s.id
+            LEFT JOIN question_types qt on q.question_type_id = qt.id
+            LEFT JOIN answers_on_question aoq on q.id = aoq.question_id
+        WHERE
+            s.id in (SELECT skill_id FROM vacancy v WHERE v.id={vacancy_id});
+    """).format(vacancy_id=sql.Literal(vacancy_id)))
 
-    for fields, table in directories:
-        result[table] = select_info(database, fields, table)
+    for quest in questons:
+        if result.get(quest['questons_id']):
+            result[quest['questons_id']]['answers'].append((quest['answer_id'], quest['answer_text']))
+        else:
+            res = {
+            "answers": [] 
+            }
+            for key in quest.keys():
+                if not key.split('_')[0] == 'answer':   
+                    res[key] = quest[key]
+            
+            res["answers"].append((quest['answer_id'], quest['answer_text']))
+            result[res['questons_id']] = res
+        if len(result) == 3:
+            break
 
     database.close()
     return jsonify(result)

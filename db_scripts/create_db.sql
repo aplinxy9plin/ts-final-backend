@@ -87,6 +87,10 @@ CREATE TABLE statuses_vacancy(
     id SERIAL PRIMARY KEY,
     title text UNIQUE
 );
+CREATE TABLE statuses_candidate(
+    id SERIAL PRIMARY KEY,
+    title text UNIQUE
+);
 --
 
 CREATE TABLE vacancy(
@@ -122,9 +126,18 @@ CREATE TABLE candidates(
     lastname text,
     number_phone text,
     link_social_network text,
-    resume text
+    resume text,
+    status_id int REFERENCES public.statuses_candidate(id)
 );
--- Отношения полей вакансии по отношению к вакансии
+
+CREATE TABLE answer_on_question_candidate(
+    id BIGSERIAL PRIMARY KEY,
+    candidate_id int REFERENCES public.candidates(id) ON DELETE CASCADE,
+    question_id bigint REFERENCES public.questons(id),
+    answer_id bigint REFERENCES public.answers_on_question(id),
+    result boolean
+);
+-- Отношения полей
 CREATE TABLE skills_for_a_vacancy(
     id BIGSERIAL PRIMARY KEY,
     vacancy_id int REFERENCES public.vacancy(id) ON DELETE CASCADE,
@@ -173,13 +186,20 @@ CREATE TABLE technologies_and_tools_for_a_candidate(
 --
 
 -- Наполенение справочников стандартынми данными
-INSERT INTO public.question_types (id, title, description) VALUES (1, 'Одиночный', 'Выбор одного варианта ответа');
-INSERT INTO public.question_types (id, title, description) VALUES (2, 'Множественный', 'Выбор нескольких вариантов ответа');
-INSERT INTO public.question_types (id, title, description) VALUES (3, 'Свободная форма', 'Вопрос со свободным ответом');
+INSERT INTO public.question_types (id, title, description) VALUES (1, 'One', 'Выбор одного варианта ответа');
+INSERT INTO public.question_types (id, title, description) VALUES (2, 'Multi', 'Выбор нескольких вариантов ответа');
+INSERT INTO public.question_types (id, title, description) VALUES (3, 'Free form', 'Вопрос со свободным ответом');
 
 INSERT INTO public.statuses_vacancy (id, title) VALUES (1,'Согласование на вакансию');
 INSERT INTO public.statuses_vacancy (id, title) VALUES (2,'Публикация');
 INSERT INTO public.statuses_vacancy (id, title) VALUES (3,'Приостоновлено');
+
+INSERT INTO public.statuses_candidate (id, title) VALUES (1,'Анализ кандидата');
+INSERT INTO public.statuses_candidate (id, title) VALUES (2,'Приглашён на собеседование');
+INSERT INTO public.statuses_candidate (id, title) VALUES (3,'Выдан оффер');
+INSERT INTO public.statuses_candidate (id, title) VALUES (4,'Подготовка к выходу на работу');
+INSERT INTO public.statuses_candidate (id, title) VALUES (5,'Окончание испытательного срока');
+INSERT INTO public.statuses_candidate (id, title) VALUES (6,'Отложено');
 --
 
 
