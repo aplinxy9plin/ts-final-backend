@@ -116,40 +116,58 @@ CREATE TABLE answers_on_question(
     is_true boolean DEFAULT false
 );
 
+CREATE TABLE candidates(
+    id BIGSERIAL PRIMARY KEY,
+    firstname text,
+    lastname text,
+    number_phone text,
+    link_social_network text,
+    resume text
+);
 -- Отношения полей вакансии по отношению к вакансии
 CREATE TABLE skills_for_a_vacancy(
     id BIGSERIAL PRIMARY KEY,
-    vacancy_id int REFERENCES public.vacancy(id),
+    vacancy_id int REFERENCES public.vacancy(id) ON DELETE CASCADE,
     skill_id int REFERENCES public.skills(id)
 );
 CREATE TABLE type_employment_for_a_vacancy(
     id BIGSERIAL PRIMARY KEY,
-    vacancy_id int REFERENCES public.vacancy(id),
+    vacancy_id int REFERENCES public.vacancy(id) ON DELETE CASCADE,
     type_employment_id int REFERENCES public.type_employment(id)
 );
 CREATE TABLE working_condition_for_a_vacancy(
     id BIGSERIAL PRIMARY KEY,
-    vacancy_id int REFERENCES public.vacancy(id),
+    vacancy_id int REFERENCES public.vacancy(id) ON DELETE CASCADE,
     working_condition_id int REFERENCES public.working_conditions(id)
 );
 CREATE TABLE job_responsibilities_for_a_vacancy(
     id BIGSERIAL PRIMARY KEY,
-    vacancy_id int REFERENCES public.vacancy(id),
+    vacancy_id int REFERENCES public.vacancy(id) ON DELETE CASCADE,
     job_responsibilities_id int REFERENCES public.job_responsibilities(id)
 );
 CREATE TABLE special_advantage_for_a_vacancy(
     id BIGSERIAL PRIMARY KEY,
-    vacancy_id int REFERENCES public.vacancy(id),
+    vacancy_id int REFERENCES public.vacancy(id) ON DELETE CASCADE,
     special_advantage_id int REFERENCES public.special_advantages(id)
 );
 CREATE TABLE soft_requirement_for_a_vacancy(
     id BIGSERIAL PRIMARY KEY,
-    vacancy_id int REFERENCES public.vacancy(id),
+    vacancy_id int REFERENCES public.vacancy(id) ON DELETE CASCADE,
     soft_requirement_id int REFERENCES public.soft_requirements(id)
 );
 CREATE TABLE technologies_and_tools_for_a_vacancy(
     id BIGSERIAL PRIMARY KEY,
-    vacancy_id int REFERENCES public.vacancy(id),
+    vacancy_id int REFERENCES public.vacancy(id) ON DELETE CASCADE,
+    technologies_and_tools_id int REFERENCES public.technologies_and_tools(id)
+);
+CREATE TABLE skills_for_a_candidate(
+    id BIGSERIAL PRIMARY KEY,
+    candidate_id int REFERENCES public.candidates(id) ON DELETE CASCADE,
+    skill_id int REFERENCES public.skills(id)
+);
+CREATE TABLE technologies_and_tools_for_a_candidate(
+    id BIGSERIAL PRIMARY KEY,
+    candidate_id int REFERENCES public.candidates(id) ON DELETE CASCADE,
     technologies_and_tools_id int REFERENCES public.technologies_and_tools(id)
 );
 --

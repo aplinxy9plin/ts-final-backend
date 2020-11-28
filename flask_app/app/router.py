@@ -5,6 +5,7 @@ from api.api import api_bp
 from vacancy.create_new_vacancy import create_new_vacancy_bp
 from vacancy.get_vacancy import get_vacancy_bp
 from vacancy.manage_vacancy import manage_vacancy_bp
+from vacancy.response_vacancy import response_vacancy_bp
 
 from qustions.create_questions import create_questions_bp
 
@@ -22,6 +23,7 @@ def route(app):
     app.register_blueprint(get_vacancy_bp)
     app.register_blueprint(create_questions_bp)
     app.register_blueprint(manage_vacancy_bp)
+    app.register_blueprint(response_vacancy_bp)
     app.register_blueprint(error_bp)
 
     return True
@@ -36,5 +38,6 @@ def csrf_exempt(csrf):
     csrf.exempt(get_vacancy_bp)
     csrf.exempt(create_questions_bp)
     csrf.exempt(manage_vacancy_bp)
+    csrf.exempt(response_vacancy_bp)
 
     return True
