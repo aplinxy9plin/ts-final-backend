@@ -11,24 +11,41 @@ get_vacancy_bp = Blueprint('get_vacancy', __name__)
 
 @get_vacancy_bp.route('/get_all_vacancy', methods=["GET"])
 def get_all_vacancy():
+    user = check_auth(request.headers, __name__)
+    if user == True:
+        user = authorize.get(request.headers.get('UserToken'))
+    
     try:
         database = Database()
     except TypeError:
         return jsonify({"messageError": "Нет подключения к БД"})
     
+    status_id = [3]
+    fields = [
+        ("v", "id"),
+        ("v", "create_date"),
+        ("sp", "title"),
+        ("pa", "title"),
+        ("sv", "title")
+    ] 
+    if type(user) != tuple:
+        if user.get_role() == 1:
+            status_id = [1, 2, 3]
     result = []
-    res = database.select_data("""
+    res = database.select_data(sql.SQL("""
         SELECT 
-            v.id,
-            v.create_date,
-            sp.title,
-            pa.title    
+            {fields}    
         FROM vacancy v
             LEFT JOIN specializations sp on sp.id = v.specializations_id
             LEFT JOIN professional_area pa on pa.id = sp.professional_area_id
-    """)
+            LEFT JOIN statuses_vacancy sv on sv.id = v.status_id
+        WHERE
+            status_id in ({status_id})
+    """).format(
+        fields=sql.SQL(",").join(sql.Identifier(i[0], i[1]) for i in fields),
+        status_id=sql.SQL(",").join(sql.Literal(i) for i in status_id)))
     if res:
-        for id, dt, specialization, professional_area in res:
+        for id, dt, specialization, professional_area, status in res:
             result.append({
                 "id": id,
                 "dt": time.mktime(datetime.datetime.strptime(dt.strftime("%d/%m/%Y"), 
@@ -36,7 +53,9 @@ def get_all_vacancy():
                 "specialization": specialization,
                 "professional_area": professional_area
             })
-
+            if type(user) != tuple:
+                if user.get_role() == 1:
+                    result[-1]['status'] = status
     database.close()
     return jsonify(result)
 

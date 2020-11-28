@@ -1,6 +1,3 @@
-import time
-import datetime
-
 from flask import Blueprint, jsonify, request
 from psycopg2 import sql
 

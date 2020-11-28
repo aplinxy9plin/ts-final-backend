@@ -75,6 +75,10 @@ CREATE TABLE question_types(
     title text UNIQUE,
     description text
 );
+CREATE TABLE statuses_vacancy(
+    id SERIAL PRIMARY KEY,
+    title text UNIQUE
+);
 --
 
 CREATE TABLE vacancy(
@@ -83,7 +87,8 @@ CREATE TABLE vacancy(
     grade_id int REFERENCES public.grade(id),
     work_address_id int REFERENCES public.work_address(id),
     create_user_id uuid REFERENCES public.users(id),
-    create_date date
+    create_date date,
+    status_id int REFERENCES public.statuses_vacancy(id)
 );
 
 CREATE TABLE questons(
@@ -131,7 +136,30 @@ CREATE TABLE special_advantage_for_a_vacancy(
 --
 
 -- Наполенение справочников стандартынми данными
-INSERT INTO public.question_types (title, description) VALUES ('Одиночный', 'Выбор одного варианта ответа');
-INSERT INTO public.question_types (title, description) VALUES ('Множественный', 'Выбор нескольких вариантов ответа');
-INSERT INTO public.question_types (title, description) VALUES ('Свободная форма', 'Вопрос со свободным ответом');
+INSERT INTO public.question_types (id, title, description) VALUES (1, 'Одиночный', 'Выбор одного варианта ответа');
+INSERT INTO public.question_types (id, title, description) VALUES (2, 'Множественный', 'Выбор нескольких вариантов ответа');
+INSERT INTO public.question_types (id, title, description) VALUES (3, 'Свободная форма', 'Вопрос со свободным ответом');
+
+INSERT INTO public.statuses_vacancy (id, title) VALUES (1,'Согласование на вакансию');
+INSERT INTO public.statuses_vacancy (id, title) VALUES (2,'Согласование');
+INSERT INTO public.statuses_vacancy (id, title) VALUES (3,'Публикация');
+INSERT INTO public.statuses_vacancy (id, title) VALUES (4,'Приостоновлено');
 --
+
+
+
+DELETE FROM skills_for_a_vacancy;
+DELETE FROM type_employment_for_a_vacancy;
+DELETE FROM working_condition_for_a_vacancy;
+DELETE FROM job_responsibilities_for_a_vacancy;
+DELETE FROM special_advantage_for_a_vacancy;
+DELETE FROM vacancy;
+DELETE FROM specializations;
+DELETE FROM professional_area;
+DELETE FROM grade;
+DELETE FROM skills;
+DELETE FROM work_address;
+DELETE FROM type_employment;
+DELETE FROM working_conditions;
+DELETE FROM job_responsibilities;
+DELETE FROM special_advantages;

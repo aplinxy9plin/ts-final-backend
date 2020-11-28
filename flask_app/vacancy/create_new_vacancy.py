@@ -175,7 +175,7 @@ def insert_vacancy(database, values, user):
         "work_address"
     ]
 
-    id = database.select_data(sql.SQL("INSERT INTO vacancy({fields}, create_user_id, create_date) VALUES({values}, {user_id}, now()) RETURNING id").format(
+    id = database.select_data(sql.SQL("INSERT INTO vacancy({fields}, create_user_id, create_date, status_id) VALUES({values}, {user_id}, now(), 1) RETURNING id").format(
         fields=sql.SQL(",").join(sql.Identifier(f'{i}_id') for i in fields),
         values=sql.SQL(",").join(sql.Literal(values[i][0]) for i in fields),
         user_id=sql.Literal(user.get_id())
