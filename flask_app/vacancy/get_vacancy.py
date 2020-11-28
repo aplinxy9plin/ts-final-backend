@@ -115,6 +115,18 @@ def get_vacancy(vacancy_id):
             "module": "type_employment_id"
         },
         {
+            "fields": ["title"],
+            "table": "soft_requirement_for_a_vacancy",
+            "module_table": "soft_requirements",
+            "module": "soft_requirement_id"
+        },
+        {
+            "fields": ["title"],
+            "table": "technologies_and_tools_for_a_vacancy",
+            "module_table": "technologies_and_tools",
+            "module": "technologies_and_tools_id"
+        },
+        {
             "fields": ["title", "description"],
             "table": "working_condition_for_a_vacancy",
             "module_table": "working_conditions",

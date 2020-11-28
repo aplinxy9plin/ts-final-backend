@@ -47,6 +47,14 @@ CREATE TABLE skills(
     id SERIAL PRIMARY KEY,
     title text UNIQUE
 );
+CREATE TABLE soft_requirements(
+    id SERIAL PRIMARY KEY,
+    title text UNIQUE
+);
+CREATE TABLE technologies_and_tools(
+    id SERIAL PRIMARY KEY,
+    title text UNIQUE
+);
 CREATE TABLE work_address(
     id SERIAL PRIMARY KEY,
     title text UNIQUE
@@ -132,6 +140,16 @@ CREATE TABLE special_advantage_for_a_vacancy(
     id BIGSERIAL PRIMARY KEY,
     vacancy_id int REFERENCES public.vacancy(id),
     special_advantage_id int REFERENCES public.special_advantages(id)
+);
+CREATE TABLE soft_requirement_for_a_vacancy(
+    id BIGSERIAL PRIMARY KEY,
+    vacancy_id int REFERENCES public.vacancy(id),
+    soft_requirement_id int REFERENCES public.soft_requirements(id)
+);
+CREATE TABLE technologies_and_tools_for_a_vacancy(
+    id BIGSERIAL PRIMARY KEY,
+    vacancy_id int REFERENCES public.vacancy(id),
+    technologies_and_tools_id int REFERENCES public.technologies_and_tools(id)
 );
 --
 

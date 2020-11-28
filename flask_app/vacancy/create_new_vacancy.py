@@ -25,7 +25,9 @@ def create_new_vacancy():
         (["title"], "skills"),
         (["title"], "work_address"),
         (["title"], "type_employment"),
+        (["title"], "soft_requirements"),
         (["title"], "professional_area"),
+        (["title"], "technologies_and_tools"),
         (["title", "description"], "grade"),
         (["title", "description"], "working_conditions"),
         (["title", "description"], "job_responsibilities"),
@@ -82,6 +84,8 @@ def get_directories_for_vacancies():
         (["id", "title"], "skills"),
         (["id", "title"], "work_address"),
         (["id", "title"], "type_employment"),
+        (["id", "title"], "soft_requirements"),
+        (["id", "title"], "technologies_and_tools"),
         (["id", "title", "description"], "grade"),
         (["id", "title", "description"], "working_conditions"),
         (["id", "title", "description"], "job_responsibilities"),
@@ -186,7 +190,9 @@ def insert_vacancy(database, values, user):
         ("type_employment_id", "type_employment", "type_employment_for_a_vacancy"),
         ("working_condition_id", "working_conditions", "working_condition_for_a_vacancy"),
         ("job_responsibilities_id", "job_responsibilities", "job_responsibilities_for_a_vacancy"),
-        ("special_advantage_id", "special_advantages", "special_advantage_for_a_vacancy")
+        ("special_advantage_id", "special_advantages", "special_advantage_for_a_vacancy"),
+        ("soft_requirement_id", "soft_requirements", "soft_requirement_for_a_vacancy"),
+        ("technologies_and_tools_id", "technologies_and_tools", "technologies_and_tools_for_a_vacancy")
     ]
 
     transaction = []
