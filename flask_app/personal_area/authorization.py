@@ -33,7 +33,6 @@ def authorization():
         if user_data:
             if check_password(user_data, password):
                 if user_data["status_active"] == True:
-                    print(user_data)
                     user = User(
                         id=user_data["id"],
                         username=user_data["username"],

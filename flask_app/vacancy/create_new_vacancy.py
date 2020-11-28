@@ -173,7 +173,7 @@ def insert_vacancy(database, values, user):
         "work_address"
     ]
 
-    res = database.insert_data(sql.SQL("INSERT INTO vacancy({fields}, creare_user_id) VALUES({values}, {user_id})").format(
+    id = database.select_data(sql.SQL("INSERT INTO vacancy({fields}, create_user_id, create_date) VALUES({values}, {user_id}, now()) RETURNING id").format(
         fields=sql.SQL(",").join(sql.Identifier(f'{i}_id') for i in fields),
         values=sql.SQL(",").join(sql.Literal(values[i][0]) for i in fields),
         user_id=sql.Literal(user.get_id())
@@ -191,18 +191,13 @@ def insert_vacancy(database, values, user):
 
     for field, row, table in fields:
         for val in values[row]:
-            transaction.append(sql.SQL("INSERT INTO {table}({fields}) VALUES({values});").format(
+            transaction.append(sql.SQL("INSERT INTO {table}({fields}, vacancy_id) VALUES({values}, {id});").format(
                 table=sql.Identifier("public", table),
                 fields=sql.Identifier(field),
-                values=sql.Literal(val)
+                values=sql.Literal(val),
+                id=sql.Literal(id[0][0])
             ))
 
-    for t in transaction:
-        print(t.as_string(database.conn))
     return database.insert_data(sql.SQL("""BEGIN; 
                 {}
                 COMMIT;""").format(sql.SQL(' ').join(i for i in transaction)))
-
-
-def get_id_vacancy(database):
-    pass

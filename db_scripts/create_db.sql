@@ -77,7 +77,8 @@ CREATE TABLE vacancy(
     specializations_id int REFERENCES public.specializations(id),
     grade_id int REFERENCES public.grade(id),
     work_address_id int REFERENCES public.work_address(id),
-    creare_user_id uuid REFERENCES public.users(id)
+    create_user_id uuid REFERENCES public.users(id),
+    create_date date
 );
 
 -- Отношения полей вакансии по отношению к вакансии
