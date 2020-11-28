@@ -70,6 +70,11 @@ CREATE TABLE special_advantages(
     title text UNIQUE,
     description text
 );
+CREATE TABLE question_types(
+    id SERIAL PRIMARY KEY,
+    title text UNIQUE,
+    description text
+);
 --
 
 CREATE TABLE vacancy(
@@ -79,6 +84,22 @@ CREATE TABLE vacancy(
     work_address_id int REFERENCES public.work_address(id),
     create_user_id uuid REFERENCES public.users(id),
     create_date date
+);
+
+CREATE TABLE questons(
+    id BIGSERIAL PRIMARY KEY,
+    question_type_id int REFERENCES public.question_types(id),
+    grade_id int REFERENCES public.grade(id),
+    skill_id int REFERENCES public.skills(id),
+    title varchar(255),
+    question text
+);
+
+CREATE TABLE answers_on_question(
+    id BIGSERIAL PRIMARY KEY,
+    question_id bigint REFERENCES public.questons(id),
+    answer text,
+    is_true boolean DEFAULT false
 );
 
 -- Отношения полей вакансии по отношению к вакансии
@@ -107,4 +128,10 @@ CREATE TABLE special_advantage_for_a_vacancy(
     vacancy_id int REFERENCES public.vacancy(id),
     special_advantage_id int REFERENCES public.special_advantages(id)
 );
+--
+
+-- Наполенение справочников стандартынми данными
+INSERT INTO public.question_types (title, description) VALUES ('Одиночный', 'Выбор одного варианта ответа');
+INSERT INTO public.question_types (title, description) VALUES ('Множественный', 'Выбор нескольких вариантов ответа');
+INSERT INTO public.question_types (title, description) VALUES ('Свободная форма', 'Вопрос со свободным ответом');
 --

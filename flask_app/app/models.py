@@ -14,6 +14,7 @@ PERMISSION_AUTHORIZATION = {
     # 2 - Employee
     "logout": [0, 1, 2],
     "create_new_vacancy": [0, 2],
+    "create_questions": [0, 2],
     "get_vacancy": [0, 1, 2]
 }
 
