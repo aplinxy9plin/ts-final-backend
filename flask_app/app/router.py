@@ -3,8 +3,10 @@ from app.errorhandler import error_bp
 from vacancy.create_new_vacancy import create_new_vacancy_bp
 from vacancy.get_vacancy import get_vacancy_bp
 from vacancy.manage_vacancy import manage_vacancy_bp
-from vacancy.manage_candidat import manage_candidat_bp
 from vacancy.response_vacancy import response_vacancy_bp
+
+from candidates.manage_candidat import manage_candidat_bp
+from candidates.analiz_candidates import analiz_candidates_bp
 
 from qustions.create_questions import create_questions_bp
 from qustions.testing import testing_bp
@@ -25,6 +27,7 @@ def route(app):
     app.register_blueprint(manage_vacancy_bp)
     app.register_blueprint(manage_candidat_bp)
     app.register_blueprint(response_vacancy_bp)
+    app.register_blueprint(analiz_candidates_bp)
     app.register_blueprint(error_bp)
 
     return True
@@ -41,5 +44,6 @@ def csrf_exempt(csrf):
     csrf.exempt(manage_vacancy_bp)
     csrf.exempt(manage_candidat_bp)
     csrf.exempt(response_vacancy_bp)
+    csrf.exempt(analiz_candidates_bp)
 
     return True

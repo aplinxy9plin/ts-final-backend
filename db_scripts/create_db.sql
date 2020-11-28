@@ -127,7 +127,8 @@ CREATE TABLE candidates(
     number_phone text,
     link_social_network text,
     resume text,
-    status_id int REFERENCES public.statuses_candidate(id)
+    status_id int REFERENCES public.statuses_candidate(id),
+    vacancy_id int REFERENCES public.vacancy(id)
 );
 
 CREATE TABLE answer_on_question_candidate(
@@ -202,6 +203,32 @@ INSERT INTO public.statuses_candidate (id, title) VALUES (5,'Окончание 
 INSERT INTO public.statuses_candidate (id, title) VALUES (6,'Отложено');
 --
 
+
+-- Функция для расчёта ценности сотрудника
+CREATE OR REPLACE FUNCTION get_score_candidate(candidate_id_ bigint)
+RETURNS int AS
+$score$
+   DECLARE
+        count_true_answers smallint;
+        count_adjacent_skills smallint;
+        count_adjacent_technologies_and_tools smallint;
+   BEGIN
+        count_true_answers = (SELECT count(*) FROM answer_on_question_candidate WHERE candidate_id=candidate_id_ and result=true) * 10;
+        count_adjacent_skills = (SELECT count(*)
+                                    FROM candidates c
+                                        LEFT JOIN skills_for_a_candidate sfac on c.id = sfac.candidate_id
+                                        LEFT JOIN skills_for_a_vacancy sfav on c.vacancy_id = sfav.vacancy_id
+                                    WHERE c.id=candidate_id_ and sfac.skill_id=sfav.skill_id) * 10;
+        count_adjacent_technologies_and_tools = (SELECT count(*)
+                                    FROM candidates c
+                                        LEFT JOIN technologies_and_tools_for_a_candidate tatfac on c.id = tatfac.candidate_id
+                                        LEFT JOIN technologies_and_tools_for_a_vacancy tatfav on c.vacancy_id = tatfav.vacancy_id
+                                    WHERE c.id=candidate_id_ and tatfac.technologies_and_tools_id=tatfav.technologies_and_tools_id) * 10;
+      RETURN count_true_answers + count_adjacent_skills + count_adjacent_technologies_and_tools;
+   END;
+$score$
+    LANGUAGE plpgsql;
+--
 
 
 DELETE FROM skills_for_a_vacancy;

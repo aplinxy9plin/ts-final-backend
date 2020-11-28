@@ -17,7 +17,8 @@ PERMISSION_AUTHORIZATION = {
     "create_questions": [0, 2],
     "get_vacancy": [0, 1, 2],
     "manage_vacancy": [0, 1],
-    "manage_candidat": [0, 1]
+    "manage_candidat": [0, 1],
+    "analiz_candidates": [0, 1]
 }
 
 
