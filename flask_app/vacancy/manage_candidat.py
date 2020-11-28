@@ -6,11 +6,11 @@ from app.models import check_auth, authorize
 
 from vacancy.create_new_vacancy import check_fields
 
-manage_vacancy_bp = Blueprint('manage_vacancy', __name__)
+manage_candidat_bp = Blueprint('manage_candidat', __name__)
 
 
-@manage_vacancy_bp.route('/get_statuses_vacancy', methods=["GET"])
-def get_statuses_vacancy():
+@manage_candidat_bp.route('/get_statuses_candidat', methods=["GET"])
+def get_statuses_candidat():
     user = check_auth(request.headers, __name__)
     if user != True:
         return user
@@ -23,7 +23,7 @@ def get_statuses_vacancy():
     
     result = []
 
-    statuses = database.select_data("SELECT id, title FROM statuses_vacancy")
+    statuses = database.select_data("SELECT id, title FROM statuses_candidate")
 
     for id, title in statuses:
         result.append({
@@ -35,8 +35,8 @@ def get_statuses_vacancy():
     return jsonify(result)
 
 
-@manage_vacancy_bp.route('/change_status_vacancy', methods=["POST"])
-def change_status_vacancy():
+@manage_candidat_bp.route('/change_status_candidat', methods=["POST"])
+def change_status_candidat():
     user = check_auth(request.headers, __name__)
     if user != True:
         return user
@@ -53,18 +53,17 @@ def change_status_vacancy():
     
     directories = [
         (None, "status_id"),
-        (None, "vacancy_id")
+        (None, "client_id")
     ]
 
     check = check_fields(directories, change_status_data)
     if type(check) == list:
         return "В json отсутсвуют поля: {}".format(",".join(i for i in check))
     
-    result = database.insert_data(sql.SQL("UPDATE vacancy SET status_id={status_id} WHERE id={vacancy_id}").format(
+    result = database.insert_data(sql.SQL("UPDATE candidates SET status_id={status_id} WHERE id={client_id}").format(
         status_id=sql.Literal(change_status_data['status_id']),
-        vacancy_id=sql.Literal(change_status_data['vacancy_id'])
+        client_id=sql.Literal(change_status_data['client_id'])
     ))
-    
 
     database.close()
     return jsonify(result)
