@@ -59,6 +59,8 @@ def create_new_vacancy():
                 if type(id) == int:
                     values[table].append(id)
 
+    values["is_testing"] = bool(vacancy_data['is_testing'])
+
     check = insert_vacancy(database, values, user)
 
     database.close()
@@ -179,10 +181,11 @@ def insert_vacancy(database, values, user):
         "work_address"
     ]
 
-    id = database.select_data(sql.SQL("INSERT INTO vacancy({fields}, create_user_id, create_date, status_id) VALUES({values}, {user_id}, now(), 1) RETURNING id").format(
+    id = database.select_data(sql.SQL("INSERT INTO vacancy({fields}, create_user_id, create_date, status_id, is_testing) VALUES({values}, {user_id}, now(), 1, {is_testing}) RETURNING id").format(
         fields=sql.SQL(",").join(sql.Identifier(f'{i}_id') for i in fields),
         values=sql.SQL(",").join(sql.Literal(values[i][0]) for i in fields),
-        user_id=sql.Literal(user.get_id())
+        user_id=sql.Literal(user.get_id()),
+        is_testing=sql.Literal(values['is_testing'])
     ))
 
     fields = [

@@ -20,7 +20,7 @@ def get_all_vacancy():
     except TypeError:
         return jsonify({"messageError": "Нет подключения к БД"})
     
-    status_id = [3]
+    status_id = [2]
     fields = [
         ("v", "id"),
         ("v", "create_date"),

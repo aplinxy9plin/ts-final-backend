@@ -96,7 +96,8 @@ CREATE TABLE vacancy(
     work_address_id int REFERENCES public.work_address(id),
     create_user_id uuid REFERENCES public.users(id),
     create_date date,
-    status_id int REFERENCES public.statuses_vacancy(id)
+    status_id int REFERENCES public.statuses_vacancy(id),
+    is_testing boolean
 );
 
 CREATE TABLE questons(
@@ -159,9 +160,8 @@ INSERT INTO public.question_types (id, title, description) VALUES (2, 'Множ�
 INSERT INTO public.question_types (id, title, description) VALUES (3, 'Свободная форма', 'Вопрос со свободным ответом');
 
 INSERT INTO public.statuses_vacancy (id, title) VALUES (1,'Согласование на вакансию');
-INSERT INTO public.statuses_vacancy (id, title) VALUES (2,'Согласование');
-INSERT INTO public.statuses_vacancy (id, title) VALUES (3,'Публикация');
-INSERT INTO public.statuses_vacancy (id, title) VALUES (4,'Приостоновлено');
+INSERT INTO public.statuses_vacancy (id, title) VALUES (2,'Публикация');
+INSERT INTO public.statuses_vacancy (id, title) VALUES (3,'Приостоновлено');
 --
 
 
