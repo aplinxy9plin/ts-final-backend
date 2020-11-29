@@ -41,7 +41,7 @@ class User ():
         self.__role = role
 
         self.__generate_token()
-        self.__time_auth = int(time.time()) + 1800
+        self.__time_auth = int(time.time()) + 3600
 
     def get_username(self):
         return self.__username

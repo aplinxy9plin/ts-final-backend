@@ -19,8 +19,6 @@ def response_vacancy():
         (None, "firstname"),
         (None, "lastname"),
         (None, "number_phone"),
-        (None, "link_social_network"),
-        (None, "resume"),
         (None, "skills"),
         (None, "technologies_and_tools"),
         (None, "vacancy_id")
@@ -88,7 +86,7 @@ def insert_candidate(database, response_vacancy_data):
     res = database.select_data(sql.SQL("INSERT INTO {table}({fields}) VALUES({values}) RETURNING id").format(
         fields=sql.SQL(",").join(sql.Identifier(i) for i in fields),
         table=sql.Identifier("public", "candidates"),
-        values=sql.SQL(",").join(sql.Literal(response_vacancy_data[i]) for i in fields)
+        values=sql.SQL(",").join(sql.Literal(response_vacancy_data.get(i)) for i in fields)
     ))
 
     return res[0][0]

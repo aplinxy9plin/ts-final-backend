@@ -20,7 +20,7 @@ def analiz_all_candidates():
     except TypeError:
         return jsonify({"messageError": "Нет подключения к БД"})
     
-    result = []
+    result = {}
 
     candidates = database.select_data("""
         SELECT
@@ -29,19 +29,22 @@ def analiz_all_candidates():
             c.lastname candidates_lastname,
             v.id vacancy_id,
             s.title specializations_title,
+            sc.title status_title,
             get_score_candidate(c.id) score
         FROM candidates c
             LEFT JOIN answer_on_question_candidate aoqc on c.id = aoqc.candidate_id
             LEFT JOIN vacancy v on c.vacancy_id = v.id
             LEFT JOIN specializations s on v.specializations_id = s.id
+            LEFT JOIN statuses_candidate sc on c.status_id = sc.id
     """)
 
     for candidat in candidates:
-        res = {}
+        candidates_id = candidat['candidates_id']
+        result[candidates_id] = {}
         for key in candidat.keys():
-            res[key] = candidat[key]
-
-        result.append(res)
+            result[candidates_id][key] = candidat[key]
+    
+    result = [result[key] for key in result]
 
     database.close()
     return jsonify(result)

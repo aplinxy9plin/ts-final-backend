@@ -50,8 +50,11 @@ def get_questions_for_teseting(vacancy_id):
             
             res["answers"].append((quest['answer_id'], quest['answer_text']))
             result[res['questons_id']] = res
-        if len(result) == 3:
+        if len(result) == 4:
+            result.pop(res['questons_id'])
             break
+    
+    result = [result[key] for key in result]
 
     database.close()
     return jsonify(result)
